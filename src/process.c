@@ -96,8 +96,7 @@ void parse_cmd(char cmd[], const int * pid) {
     comm_fd = fopen(comm_path, "r");
 
     fgets(cmd, SIZE, comm_fd);
-    int len = strlen(cmd);
-    cmd[len - 1] = '\0';
+    cmd[strlen(cmd) - 1] = '\0';
 
     fclose(comm_fd);
 }
@@ -112,7 +111,6 @@ void parse_opt(char opt[], const int * pid) {
     cmdline_fd = fopen(cmdline_path, "r");
 
     fread(buf, sizeof(buf) - 1, 1, cmdline_fd);
-
     for (int i = 0; i < (sizeof(buf) - 1); i++) {
         if (!(buf[i] | buf[i + 1])) {
             break;
@@ -122,9 +120,7 @@ void parse_opt(char opt[], const int * pid) {
             buf[i] = ' ';
         }
     }
-
     strcpy(tmp, buf);
-
     sscanf(tmp, "%*[^ ]%*[ ]%[^\n]", opt);
 
     fclose(cmdline_fd);
