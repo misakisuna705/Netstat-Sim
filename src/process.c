@@ -79,25 +79,53 @@ void parse_pid(int * pid, const int * inode) {
 }
 
 void parse_pname(char pname[], const int * pid) {
-    char comm_path[SIZE], cmdline_path[SIZE];
-    FILE * comm_fd, * cmdline_fd;
-    char buf[SIZE], cmd[SIZE], opt[SIZE] = {'\0'};
+    char cmd[SIZE], opt[SIZE] = {'\0'};
+
+    parse_cmd(cmd, pid);
+    parse_opt(opt, pid);
+
+    sprintf(pname, "%s %s", cmd, opt);
+}
+
+void parse_cmd(char cmd[], const int * pid) {
+    char comm_path[SIZE];
+    FILE * comm_fd;
 
     sprintf(comm_path, "/proc/%d/comm", *pid);
-    sprintf(cmdline_path, "/proc/%d/cmdline", *pid);
 
     comm_fd = fopen(comm_path, "r");
-    cmdline_fd = fopen(cmdline_path, "r");
 
-    fgets(cmd, sizeof(cmd), comm_fd);
+    fgets(cmd, SIZE, comm_fd);
     int len = strlen(cmd);
     cmd[len - 1] = '\0';
 
-    fgets(buf, sizeof(buf), cmdline_fd);
-    sscanf(buf, "%*[^ ]%*[ ]%[^\n]", opt);
-
-    sprintf(pname, "%s %s", cmd, opt);
-
     fclose(comm_fd);
+}
+
+void parse_opt(char opt[], const int * pid) {
+    char cmdline_path[SIZE];
+    FILE * cmdline_fd;
+    char buf[SIZE] = {'\0'}, tmp[SIZE] = {'\0'};
+
+    sprintf(cmdline_path, "/proc/%d/cmdline", *pid);
+
+    cmdline_fd = fopen(cmdline_path, "r");
+
+    fread(buf, sizeof(buf) - 1, 1, cmdline_fd);
+
+    for (int i = 0; i < (sizeof(buf) - 1); i++) {
+        if (!(buf[i] | buf[i + 1])) {
+            break;
+        }
+
+        if (buf[i] == '\0') {
+            buf[i] = ' ';
+        }
+    }
+
+    strcpy(tmp, buf);
+
+    sscanf(tmp, "%*[^ ]%*[ ]%[^\n]", opt);
+
     fclose(cmdline_fd);
 }
