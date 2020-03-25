@@ -73,5 +73,13 @@ void print_info(const char proto[], const int version, Ip_Info * ip_info, Proces
     sprintf(local_addr, "%s:%d", ip_info->local_ip, ip_info->local_port);
     sprintf(foreign_addr, "%s:%d", ip_info->foreign_ip, ip_info->foreign_port);
 
-    printf("%s%-2c %-45s %-45s %d/%s\n", proto, version, local_addr, foreign_addr, process_info->pid, process_info->pname);
+    switch (process_info->pid) {
+        case '-':
+            printf("%s%-2c %-45s %-45s %c/%s\n", proto, version, local_addr, foreign_addr, process_info->pid, process_info->pname);
+            break;
+
+        default:
+            printf("%s%-2c %-45s %-45s %d/%s\n", proto, version, local_addr, foreign_addr, process_info->pid, process_info->pname);
+            break;
+    }
 }
