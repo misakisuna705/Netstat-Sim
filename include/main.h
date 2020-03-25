@@ -6,12 +6,12 @@
 #include <arpa/inet.h>
 
 enum {TCP, UDP};
-enum {IPv4, IPv6};
+enum {IPv4 = ' ', IPv6 = '6'};
 
 typedef struct {
-    char local_addr[SIZE];
+    char local_ip[SIZE];
     int local_port;
-    char foreign_addr[SIZE];
+    char foreign_ip[SIZE];
     int foreign_port;
     int inode;
 } Ip_Info;

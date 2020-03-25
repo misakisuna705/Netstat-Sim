@@ -24,8 +24,8 @@ void parse_ipv4(Ip_Info * info, const char line[]) {
     sscanf(line, "%*d: %X:%X %X:%X %*X %*X:%*X %*X:%*X %*d %*d %*d %d",
            &local_addr.s_addr, &info->local_port, &foreign_addr.s_addr, &info->foreign_port, &info->inode);
 
-    inet_ntop(AF_INET, &local_addr, info->local_addr, sizeof(info->local_addr));
-    inet_ntop(AF_INET, &foreign_addr, info->foreign_addr, sizeof(info->foreign_addr));
+    inet_ntop(AF_INET, &local_addr, info->local_ip, sizeof(info->local_ip));
+    inet_ntop(AF_INET, &foreign_addr, info->foreign_ip, sizeof(info->foreign_ip));
 }
 
 void parse_ipv6(Ip_Info * info, const char line[]) {
@@ -38,6 +38,6 @@ void parse_ipv6(Ip_Info * info, const char line[]) {
            &local_ip[0], &local_ip[1], &local_ip[2], &local_ip[3], &info->local_port,
            &foreign_ip[0], &foreign_ip[1], &foreign_ip[2], &foreign_ip[3], &info->foreign_port, &info->inode);
 
-    inet_ntop(AF_INET6, &local_addr, info->local_addr, sizeof(info->local_addr));
-    inet_ntop(AF_INET6, &foreign_addr, info->foreign_addr, sizeof(info->local_addr));
+    inet_ntop(AF_INET6, &local_addr, info->local_ip, sizeof(info->local_ip));
+    inet_ntop(AF_INET6, &foreign_addr, info->foreign_ip, sizeof(info->local_ip));
 }

@@ -10,7 +10,7 @@
 
 void parse_filter(const int * argc, char * argv[], char filter[]);
 void list_info(const int protocol, const char filter[]);
-void print_info(const int protocol, const int version, Ip_Info * ip_info, Process_Info * process_info, const char filter[]);
+void print_info(const char proto[], const int version, Ip_Info * ip_info, Process_Info * process_info, const char filter[]);
 
 int main(int argc, char * argv[]) {
     const char * short_opts = "tu";
@@ -78,14 +78,17 @@ void list_info(const int protocol, const char filter[]) {
     FILE * fd = NULL;
     Ip_Info ip_info;
     Process_Info process_info;
+    char proto[SIZE] = {'\0'};
 
     switch (protocol) {
         case TCP:
             fd = fopen("/proc/net/tcp", "r");
+            strcpy(proto, "tcp");
             break;
 
         case UDP:
             fd = fopen("/proc/net/udp", "r");
+            strcpy(proto, "udp");
             break;
 
         default:
@@ -97,7 +100,7 @@ void list_info(const int protocol, const char filter[]) {
     while (fgets(line, sizeof(line), fd) != NULL) {
         parse_ip(&ip_info, IPv4, line);
         parse_process(&process_info, &ip_info.inode);
-        print_info(protocol, IPv4, &ip_info, &process_info, filter);
+        print_info(proto, IPv4, &ip_info, &process_info, filter);
     }
 
     fclose(fd);
@@ -120,29 +123,33 @@ void list_info(const int protocol, const char filter[]) {
     while (fgets(line, sizeof(line), fd) != NULL) {
         parse_ip(&ip_info, IPv6, line);
         parse_process(&process_info, &ip_info.inode);
-        print_info(protocol, IPv6, &ip_info, &process_info, filter);
-
-        /*printf("%s %d %s %d pid:%d cmd:%s\n",*/
-        /*ip_info.local_addr, ip_info.local_port, ip_info.foreign_addr, ip_info.foreign_port,*/
-        /*process_info.pid, process_info.pname);*/
+        print_info(proto, IPv6, &ip_info, &process_info, filter);
     }
 
     fclose(fd);
 }
 
-void print_info(const int protocol, const int version, Ip_Info * ip_info, Process_Info * process_info, const char filter[]) {
-    if (filter) {
+void print_info(const char proto[], const int version, Ip_Info * ip_info, Process_Info * process_info, const char filter[]) {
+    if (filter[0]) {
         regex_t regex;
         regmatch_t match[1];
 
         regcomp(&regex, filter, REG_EXTENDED);
 
         if (!regexec(&regex, process_info->pname, 1, match, 0)) {
+            char local_addr[SIZE], foreign_addr[SIZE];
+
+            sprintf(local_addr, "%s:%d", ip_info->local_ip, ip_info->local_port);
+            sprintf(foreign_addr, "%s:%d", ip_info->foreign_ip, ip_info->foreign_port);
+
+            printf("%s%-2c %-45s %-45s %d/%s\n", proto, version, local_addr, foreign_addr, process_info->pid, process_info->pname);
         }
     } else {
-    }
+            char local_addr[SIZE], foreign_addr[SIZE];
 
-    /*printf("%s %d %s %d pid:%d cmd:%s\n",*/
-    /*ip_info->local_addr, ip_info->local_port, ip_info->foreign_addr, ip_info->foreign_port,*/
-    /*process_info->pid, process_info->pname);*/
+            sprintf(local_addr, "%s:%d", ip_info->local_ip, ip_info->local_port);
+            sprintf(foreign_addr, "%s:%d", ip_info->foreign_ip, ip_info->foreign_port);
+
+            printf("%s%-2c %-45s %-45s %d/%s\n", proto, version, local_addr, foreign_addr, process_info->pid, process_info->pname);
+    }
 }
