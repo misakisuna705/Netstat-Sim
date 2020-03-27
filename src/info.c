@@ -43,11 +43,11 @@ void parse_info(FILE * fd, char proto[], int version, const char filter[]) {
     while (fgets(line, sizeof(line), fd) != NULL) {
         parse_ip(&ip_info, version, line);
         parse_process(&process_info, &ip_info.inode);
-        parse_filter(proto, version, &ip_info, &process_info, filter);
+        print_info(proto, version, &ip_info, &process_info, filter);
     }
 }
 
-void parse_filter(const char proto[], const int version, Ip_Info * ip_info, Process_Info * process_info, const char filter[]) {
+void print_info(const char proto[], const int version, Ip_Info * ip_info, Process_Info * process_info, const char filter[]) {
     char info[SIZE];
     char local_addr[SIZE], foreign_addr[SIZE];
     regex_t regex;
