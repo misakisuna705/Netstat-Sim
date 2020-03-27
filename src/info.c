@@ -57,7 +57,6 @@ void parse_filter(const char proto[], const int version, Ip_Info * ip_info, Proc
             break;
 
         default:
-
             regcomp(&regex, filter, REG_EXTENDED);
 
             if (!regexec(&regex, process_info->pname, 1, match, 0)) {

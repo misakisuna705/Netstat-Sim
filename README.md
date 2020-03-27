@@ -13,6 +13,8 @@
 
 <!-- vim-markdown-toc -->
 
+---
+
 ## 使用方式
 
 ### 編譯
@@ -76,3 +78,19 @@ make clean
 ```
 
 ## 執行結果
+
+-   show with sudo / no sudo
+
+![01](doc/img/01.png)
+
+-   show all
+
+![02](doc/img/02.png)
+
+-   show part
+
+![03](doc/img/03.png)
+
+-   show with regex filter
+
+![04](doc/img/04.png)
