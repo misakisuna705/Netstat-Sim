@@ -70,7 +70,7 @@ void parse_arg(const int * argc, char * argv[], char filter[]) {
             strcpy(filter, argv[0]);
 
             for (int i = 1; i <= *argc - 1; i++) {
-                strcat(filter, " ");
+                strcat(filter, "[ ]+");
                 strcat(filter, argv[i]);
             }
             break;
