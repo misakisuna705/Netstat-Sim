@@ -27,12 +27,16 @@ make
 
 #### cmake
 
-```zsh
-cmake . -DCMAKE_BUILD_TYPE=Release -Bbuild/release && make -C ./build/release # cmake with make
-```
+-   cmake with make
 
 ```zsh
-cmake . -GNinja -DCMAKE_BUILD_TYPE=Release -Bbuild/release && ninja -C ./build/release # cmake with ninja
+cmake . -DCMAKE_BUILD_TYPE=Release -Bbuild/release && make -C ./build/release
+```
+
+-   cmake with ninja
+
+```zsh
+cmake . -GNinja -DCMAKE_BUILD_TYPE=Release -Bbuild/release && ninja -C ./build/release
 ```
 
 ### 執行
