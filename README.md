@@ -69,7 +69,7 @@ make clean
 ├── Makefile
 ├── README.md
 ├── bin
-│   └── main
+│   └── Netstat_Sim
 ├── build
 │   ├── info.o
 │   ├── ip.o
