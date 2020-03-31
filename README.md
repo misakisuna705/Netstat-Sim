@@ -7,8 +7,6 @@
         + [make](#make)
         + [cmake](#cmake)
     - [執行](#執行)
-        + [make](#make-1)
-        + [exe](#exe)
     - [清理](#清理)
 * [專案結構](#專案結構)
 * [執行結果](#執行結果)
@@ -43,13 +41,13 @@ cmake . -GNinja -DCMAKE_BUILD_TYPE=Release -Bbuild/release && ninja -C ./build/r
 
 ### 執行
 
-#### make
+-   make
 
 ```zsh
 make run
 ```
 
-#### exe
+-   exe
 
 ```zsh
 bin/Netstat_Sim
