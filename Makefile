@@ -1,13 +1,13 @@
 SRC_DIR := src
-INC_DIR := include
-LIB_DIR := lib
 OBJ_DIR := build
 BIN_DIR := bin
 
 SRC := $(wildcard $(SRC_DIR)/*.c)
-LIB := -l$(wildcard $(LIB_DIR)/*)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 BIN := $(notdir $(shell pwd))
+
+INC_DIR := include
+LIB_DIR := lib
 
 INCFLAG := -I${INC_DIR}
 LIBFLAG := -L${LIB_DIR}
