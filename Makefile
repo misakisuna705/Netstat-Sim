@@ -4,7 +4,7 @@ BIN_DIR := bin
 
 SRC := $(wildcard $(SRC_DIR)/*.c)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-BIN := $(notdir $(shell pwd))
+BIN := main
 
 INC_DIR := include
 LIB_DIR := lib
@@ -22,14 +22,20 @@ $(BIN_DIR)/$(BIN): $(OBJ) | $(BIN_DIR)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(INCFLAG) $(FLAG) -c $< -o $@
 
-$(OBJ_DIR):
+$(OBJ_DIR): $(INC_DIR)
 	mkdir $@
 
-$(BIN_DIR):
+$(BIN_DIR): $(LIB_DIR)
+	mkdir $@
+
+$(INC_DIR):
+	mkdir $@
+
+$(LIB_DIR):
 	mkdir $@
 
 run:
-	$(BIN_DIR)/$(BIN)
+	$(BIN_DIR)/$(BIN) $(ARG)
 
 clean:
 	$(RM) -r $(OBJ_DIR)

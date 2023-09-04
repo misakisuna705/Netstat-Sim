@@ -44,13 +44,13 @@ cmake . -GNinja -DCMAKE_BUILD_TYPE=Release -Bbuild/release && ninja -C ./build/r
 -   make
 
 ```zsh
-make run
+make run ARG="xxx"
 ```
 
 -   exe
 
 ```zsh
-bin/Netstat_Sim
+bin/main xxx
 ```
 
 ### 清理
